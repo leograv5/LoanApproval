@@ -3,24 +3,44 @@ package com.vivetgravier.loanApproval;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class LoanApprovalServiceController {
-    private static List<String> tests = new ArrayList<>();
-    static {
-        tests.add("test");
-        tests.add("commande");
-        tests.add("fonctionne");
-    }
 
-    @RequestMapping(value = "/tests", method = RequestMethod.GET)
-    public ResponseEntity<List<String>> getTests () {
-        return new ResponseEntity<>(this.tests, HttpStatus.OK);
+    private static final String URL_APPROVAL_MANAGER = "urlApprovalManager";
+    private static final String URL_ACCOUNT_MANAGER = "urlAccountManager";
+
+    @RequestMapping(value = "/loanApproval/{name}/{value}", method = RequestMethod.GET)
+    public ResponseEntity<String> loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
+
+        String risk = "", msg = "";
+        RestTemplate restTemplate = new RestTemplate();
+
+        if (value < 10000) {
+            risk = restTemplate.getForObject(URL_ACCOUNT_MANAGER + "/getRisk/"+name, String.class);
+        }
+
+        if (risk == "LOW") {
+            restTemplate.put(URL_ACCOUNT_MANAGER+"/addMoney/"+name+value, null);
+            return new ResponseEntity<>("Approved", HttpStatus.OK);
+        }
+
+        boolean approval = false;
+        if (risk == "HIGH" || value >= 10000) {
+             approval = restTemplate.getForObject(URL_APPROVAL_MANAGER, boolean.class);
+        }
+
+        if (approval) {
+            return new ResponseEntity<>("Approved", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Refused", HttpStatus.OK);
+        }
     }
 }
