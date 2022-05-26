@@ -19,8 +19,8 @@ public class LoanApprovalServiceController {
 
     @RequestMapping(value = "/loanApproval", method = RequestMethod.GET)
     public ResponseEntity<String> loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
-
-        String risk = "", msg = "";
+        return new ResponseEntity<>(name, HttpStatus.OK);
+        /*String risk = "", msg = "";
         RestTemplate restTemplate = new RestTemplate();
 
         if (value < 10000) {
@@ -34,13 +34,13 @@ public class LoanApprovalServiceController {
 
         boolean approval = false;
         if (risk == "HIGH" || value >= 10000) {
-             approval = restTemplate.getForObject(URL_APPROVAL_MANAGER, boolean.class);
+             approval = (boolean) restTemplate.getForObject(URL_APPROVAL_MANAGER, Boolean.class);
         }
 
         if (approval) {
             return new ResponseEntity<>("Approved", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Refused", HttpStatus.OK);
-        }
+        }*/
     }
 }
