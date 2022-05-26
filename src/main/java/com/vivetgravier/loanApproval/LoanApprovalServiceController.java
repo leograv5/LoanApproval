@@ -17,7 +17,7 @@ public class LoanApprovalServiceController {
     private static final String URL_APPROVAL_MANAGER = "urlApprovalManager";
     private static final String URL_ACCOUNT_MANAGER = "urlAccountManager";
 
-    @RequestMapping(value = "/loanApproval/{name}/{value}", method = RequestMethod.GET)
+    @RequestMapping(value = "/loanApproval", method = RequestMethod.GET)
     public ResponseEntity<String> loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
 
         String risk = "", msg = "";
