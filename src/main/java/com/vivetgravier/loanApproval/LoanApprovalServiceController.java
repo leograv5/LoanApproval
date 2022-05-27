@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +31,6 @@ public class LoanApprovalServiceController {
         RestTemplate restTemplate = new RestTemplate();
         Map<?, ?> map = null;
 
-        return name;
-/*
         if (value < 10000) {
             try {
                 String uriGetAccount = URL_ACCOUNT_MANAGER + "/accounts/get?lastname="+name;
@@ -39,13 +38,19 @@ public class LoanApprovalServiceController {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            return new ResponseEntity<>(map.toString(), HttpStatus.OK);
+            String retour = "";
+            Iterator it = map.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, String> entry = (Map.Entry)it.next();
+                retour += entry.getKey() + " - " + entry.getValue();
+            }
+            return retour;
         }
 
 
         if (risk == "LOW") {
             restTemplate.put(URL_ACCOUNT_MANAGER+"/addMoney/"+name+value, null);
-            return new ResponseEntity<>("Approved", HttpStatus.OK);
+            return "approved";
         }
 
         boolean approval = false;
@@ -54,9 +59,9 @@ public class LoanApprovalServiceController {
         }
 
         if (approval) {
-            return new ResponseEntity<>("Approved", HttpStatus.OK);
+            return "approved";
         } else {
-            return new ResponseEntity<>("Refused", HttpStatus.OK);
-        }*/
+            return "refused";
+        }
     }
 }
