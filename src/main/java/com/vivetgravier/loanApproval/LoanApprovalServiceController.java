@@ -1,6 +1,9 @@
 package com.vivetgravier.loanApproval;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.coyote.Response;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +13,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class LoanApprovalServiceController {
@@ -19,17 +23,22 @@ public class LoanApprovalServiceController {
     private static final String URL_CHECK_ACCOUNT = "https://vivetgravier-check-account.herokuapp.com/checkAccount";
 
     @RequestMapping(value = "/loanApproval", method = RequestMethod.GET)
-    public String loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
+    public ResponseEntity<String> loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
 
+        String risk = "", msg = "";
+        ObjectMapper objectMapper = new ObjectMapper();
         RestTemplate restTemplate = new RestTemplate();
-        String risk = restTemplate.getForObject(URL_CHECK_ACCOUNT, String.class);
-        return risk;
-        /*String risk = "", msg = "";
-        RestTemplate restTemplate = new RestTemplate();
+        Map<?, ?> map = null;
 
         if (value < 10000) {
-            risk = restTemplate.getForObject(URL_ACCOUNT_MANAGER + "/getRisk/"+name, String.class);
+            try {
+                map = objectMapper.readValue(restTemplate.getForObject(URL_ACCOUNT_MANAGER + "/accounts/get?lastname="+name, String.class), Map.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            return new ResponseEntity<>(map.toString(), HttpStatus.OK);
         }
+
 
         if (risk == "LOW") {
             restTemplate.put(URL_ACCOUNT_MANAGER+"/addMoney/"+name+value, null);
@@ -45,6 +54,6 @@ public class LoanApprovalServiceController {
             return new ResponseEntity<>("Approved", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Refused", HttpStatus.OK);
-        }*/
+        }
     }
 }
