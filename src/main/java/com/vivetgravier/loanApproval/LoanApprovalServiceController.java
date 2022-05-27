@@ -16,10 +16,14 @@ public class LoanApprovalServiceController {
 
     private static final String URL_APPROVAL_MANAGER = "urlApprovalManager";
     private static final String URL_ACCOUNT_MANAGER = "urlAccountManager";
+    private static final String URL_CHECK_ACCOUNT = "https://vivetgravier-check-account.herokuapp.com/checkAccount";
 
     @RequestMapping(value = "/loanApproval", method = RequestMethod.GET)
     public ResponseEntity<String> loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
-        return new ResponseEntity<>(name, HttpStatus.OK);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String risk = restTemplate.getForObject(URL_CHECK_ACCOUNT, String.class);
+        return new ResponseEntity<>(risk, HttpStatus.OK);
         /*String risk = "", msg = "";
         RestTemplate restTemplate = new RestTemplate();
 
