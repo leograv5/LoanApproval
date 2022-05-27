@@ -32,7 +32,8 @@ public class LoanApprovalServiceController {
 
         if (value < 10000) {
             try {
-                map = objectMapper.readValue(restTemplate.getForObject(URL_ACCOUNT_MANAGER + "/accounts/get?lastname="+name, String.class), Map.class);
+                String uriGetAccount = URL_ACCOUNT_MANAGER + "/accounts/get?lastname="+name;
+                map = objectMapper.readValue(restTemplate.getForObject(uriGetAccount, String.class), Map.class);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
