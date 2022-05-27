@@ -49,13 +49,13 @@ public class LoanApprovalServiceController {
 
 
         if (risk == "LOW") {
-            restTemplate.put(URL_ACCOUNT_MANAGER+"/addMoney/"+name+value, null);
+            //restTemplate.put(URL_ACCOUNT_MANAGER+"/addMoney/"+name+value, null);
             return "approved";
         }
 
         boolean approval = false;
         if (risk == "HIGH" || value >= 10000) {
-             approval = (boolean) restTemplate.getForObject(URL_APPROVAL_MANAGER, Boolean.class);
+             //approval = (boolean) restTemplate.getForObject(URL_APPROVAL_MANAGER, Boolean.class);
         }
 
         if (approval) {
