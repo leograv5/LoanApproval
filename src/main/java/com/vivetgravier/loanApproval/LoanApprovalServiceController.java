@@ -20,8 +20,8 @@ import java.util.Map;
 public class LoanApprovalServiceController {
 
     private static final String URL_APPROVAL_MANAGER = "urlApprovalManager";
-    private static final String URL_ACCOUNT_MANAGER = "urlAccountManager";
-    private static final String URL_CHECK_ACCOUNT = "https://vivetgravier-check-account.herokuapp.com/checkAccount";
+    private static final String URL_ACCOUNT_MANAGER = "https://inf63app8.appspot.com/";
+    private static final String URL_CHECK_ACCOUNT = "https://vivetgravier-check-account.herokuapp.com/checkAccount/";
 
     @RequestMapping(value = "/loanApproval", method = RequestMethod.GET)
     public String loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
@@ -33,7 +33,7 @@ public class LoanApprovalServiceController {
 
         if (value < 10000) {
             try {
-                String uriGetAccount = URL_ACCOUNT_MANAGER + "/accounts/get?lastname="+name;
+                String uriGetAccount = URL_ACCOUNT_MANAGER + "accounts/get?lastname="+name;
                 map = objectMapper.readValue(restTemplate.getForObject(uriGetAccount, String.class), Map.class);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
