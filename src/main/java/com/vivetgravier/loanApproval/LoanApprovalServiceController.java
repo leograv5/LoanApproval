@@ -23,13 +23,15 @@ public class LoanApprovalServiceController {
     private static final String URL_CHECK_ACCOUNT = "https://vivetgravier-check-account.herokuapp.com/checkAccount";
 
     @RequestMapping(value = "/loanApproval", method = RequestMethod.GET)
-    public ResponseEntity<String> loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
+    public String loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
 
         String risk = "", msg = "";
         ObjectMapper objectMapper = new ObjectMapper();
         RestTemplate restTemplate = new RestTemplate();
         Map<?, ?> map = null;
 
+        return name;
+/*
         if (value < 10000) {
             try {
                 String uriGetAccount = URL_ACCOUNT_MANAGER + "/accounts/get?lastname="+name;
@@ -55,6 +57,6 @@ public class LoanApprovalServiceController {
             return new ResponseEntity<>("Approved", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Refused", HttpStatus.OK);
-        }
+        }*/
     }
 }
