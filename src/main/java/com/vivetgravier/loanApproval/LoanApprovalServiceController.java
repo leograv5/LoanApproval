@@ -22,7 +22,7 @@ public class LoanApprovalServiceController {
     public String loanApproval(@RequestParam(name="name") String name, @RequestParam(name="value") float value) {
 
         RestTemplate restTemplate = new RestTemplate();
-        String risk = restTemplate.getForObject(URL_CHECK_ACCOUNT, String.class);
+        String risk = restTemplate.getForObject(URL_CHECK_ACCOUNT+"?name="+name+"&value="+value, String.class);
         return risk;
         /*String risk = "", msg = "";
         RestTemplate restTemplate = new RestTemplate();
